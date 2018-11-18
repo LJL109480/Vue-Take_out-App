@@ -6,9 +6,11 @@
 </template>
 <script>
   import FootGuide from './components/FootGuide/FootGuibe.vue'
+
   export default{
     components:{
       FootGuide
+
     }
   }
 </script>

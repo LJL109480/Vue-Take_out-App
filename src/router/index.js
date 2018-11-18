@@ -8,6 +8,7 @@ import MSite from '../pages/MSite/MSite.vue'
 import Order from '../pages/Order/Order.vue'
 import Profile from '../pages/Profile/Profile.vue'
 import Search from '../pages/Search/Search.vue'
+import Login from  '../pages/Login/Login.vue'
 Vue.use(VueRouter);
 export default new VueRouter({
   mode: 'history',
@@ -23,6 +24,10 @@ export default new VueRouter({
      {
        path:'/profile',
        component: Profile
+     },
+     {
+       path:'/login',
+       component:Login
      },
      {
        path:'/search',
