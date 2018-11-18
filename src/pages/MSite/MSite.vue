@@ -5,7 +5,7 @@
       <a class="header_search" slot="left">
         <i class="iconfont icon-sousuo"></i>
       </a>
-      <a class="header_login" slot="right">
+      <a class="header_login" slot="right" @click="$router.push('/login')">
         <span class="header_login_text">登录|注册</span>
       </a>
     </TopHeader>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <router-view/>
-    <FootGuide/>
+    <FootGuide v-show="$route.meta.ShowFoot"/>
   </div>
 </template>
 <script>

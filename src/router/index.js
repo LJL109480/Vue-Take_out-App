@@ -15,23 +15,38 @@ export default new VueRouter({
    routes:[
      {
        path: '/msite',
-       component: MSite
+       component: MSite,
+       meta:{
+         ShowFoot:true
+       }
      },
      {
        path:'/order',
-       component: Order
+       component: Order,
+       meta:{
+         ShowFoot:true
+       }
      },
      {
        path:'/profile',
-       component: Profile
+       component: Profile,
+       meta:{
+         ShowFoot:true
+       }
      },
      {
        path:'/login',
-       component:Login
+       component:Login,
+       meta:{
+         ShowFoot:false
+       }
      },
      {
        path:'/search',
-       component: Search
+       component: Search,
+       meta:{
+         ShowFoot:true
+       }
      },
      {
        path:'/',
