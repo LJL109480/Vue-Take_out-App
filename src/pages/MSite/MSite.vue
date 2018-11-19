@@ -1,7 +1,7 @@
 <template>
   <section class="msite">
     <!--首页头部-->
-    <TopHeader title="昌平区北七家宏福科技园(337省道北)">
+    <TopHeader :title="address.name">
       <a class="header_search" slot="left">
         <i class="iconfont icon-sousuo"></i>
       </a>
@@ -27,7 +27,15 @@
 <script>
   import ShopList from '../../components/ShopList/ShopList.vue'
   import MSiteSwiper  from  '../../components/MSiteSwiper/MSiteSwiper.vue'
+  import {mapState} from 'vuex'
   export default{
+    mounted(){
+      this.$store.dispatch('getFoodCategorys')
+      this.$store.dispatch('getShops')
+    },
+    computed:{
+      ...mapState(['address']),
+    },
     components:{
       ShopList,
       MSiteSwiper
