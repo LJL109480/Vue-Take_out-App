@@ -13,3 +13,16 @@ export const reqFoodCategorys = () => ajax(BASE+'/index_category')
 
 // [3、根据经纬度获取商铺列表](#3根据经纬度获取商铺列表)<br/>
 export const reqShops = ({longitude, latitude}) => ajax(BASE+ '/shops', {latitude, longitude})
+
+//4 发送短信验证码
+export const reqSendcode = (phone) => ajax(BASE+'/sendcode', {phone})
+
+//5.手机号验证码登陆
+export const reqSmsLogin = (phone, code)=> ajax(BASE+'/login_sms', {phone, code}, 'POST')
+
+//6.用户名密码登陆
+export const reqPwdlogin = ({name, pwd, captcha}) => ajax(BASE+'/login_pwd', {name, pwd, captcha}, 'POST')
+//7.获取用户信息
+export const reqUserInfo = () => ajax(BASE+'/userinfo')
+//8.用户登出
+export const reqLogout = () => ajax(BASE+'/logout')

@@ -4,12 +4,16 @@ Vuex最核心的管理对象
 import {
   reqAddress,
   reqShops,
-  reqFoodCategorys
+  reqFoodCategorys,
+  reqUserInfo,
+  reqLogout
 } from '../api'
 import {
   RECEIVE_SHOPS,
   RECEIVE_CATEGORYS,
-  RECEIVE_ADDRESS
+  RECEIVE_ADDRESS,
+  RECEIVE_USER,
+  LOGOUT_USER
 } from './mutation-types'
 
 export default {
@@ -48,5 +52,23 @@ export default {
       commit(RECEIVE_SHOPS, {shops})
     }
   },
+  //保存user的信息同步action
+  saveUser({commit}, user){
+    commit(RECEIVE_USER,{user})
+  },
+  //异步获取用户信息
+  async getUserInfo ({commit}){
+    const result = await reqUserInfo()
+    if(result.code===0){
+      const user = result.data
+      commit(RECEIVE_USER,{user})
+    }
+  },
+  async logout({commit}){
+    const result = await reqLogout()
+    if(result.code ===0 ){
+      commit(LOGOUT_USER)
+    }
+  }
 
 }
