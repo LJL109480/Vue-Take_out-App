@@ -2,9 +2,11 @@
   <div>
     <div class="goods">
     <div class="menu-wrapper">
-      <ul>
+      <ul ref="leftUl">
         <!--current-->
-        <li class="menu-item " v-for="(good, index) in goods" :key="index">
+        <li class="menu-item " v-for="(good, index) in goods"
+            :key="index" :class="{current:index===currentIndex} " @click="clickItem(index)"
+        >
           <span class="text bottom-border-1px">
              <img class="icon" v-if="good.icon" :src="good.icon">
             {{good.name}}</span>
@@ -12,7 +14,7 @@
       </ul>
     </div>
     <div class="foods-wrapper">
-      <ul>
+      <ul ref="rightUl">
         <li class="food-list-hook" v-for="(good, index) in goods" :key="index">
           <h1 class="title">{{good.name}}</h1>
           <ul>
@@ -44,13 +46,93 @@
   </div>
 </template>
 <script>
+  import BScroll  from 'better-scroll'
   import {mapState} from 'vuex'
   export default{
+   /* //右侧滑动，左侧根据右侧滑动距离对应到符合失误的标签上
+    定义一个tops分类管理li标签的top值，当数据列表显示之后，不在变化
+    定义一个scrollY，管理右侧Y轴在滑动过程中的不断变化
+    列表显示之后，统计更新tops
+    监视右侧滑动，调整更新scrollY的值
+    */
+    //左侧滑动点击，右侧要根据左侧点击滑动到相应的食物上
+    data(){
+      return{
+        scrollY:0, //右侧的滑动位置
+        tops:[] //右侧所有分类li标签的top值
+      }
+    },
     mounted(){
-      this.$store.dispatch('getShopGoods')
+      this.$store.dispatch('getShopGoods',() =>{
+        this.$nextTick(()=>{
+          this._initSide()
+          this._initTop()
+        })
+
+      })
     },
     computed:{
-      ...mapState(['goods'])
+      ...mapState(['goods']),
+      currentIndex(){
+        const {scrollY, tops} = this
+        //计算出最新的下标
+        const index = tops.findIndex((top, index) =>{
+          //scrollY固定时大于等于当前top，并且scrollY下于下一个top
+          return scrollY>=top && scrollY< tops[index+1]
+        })
+        if(this.index !== index && this.leftScroll){
+          this.index = index
+          //将index对应到左侧li滚动上面（尽可能）
+          const li = this.$refs.leftUl.children[index]
+          this.leftScroll.scrollToElement(li, 200)
+        }
+        return index
+      },
+    },
+    methods:{
+      _initSide(){
+        //左侧滑动
+        this.leftScroll = new BScroll('.menu-wrapper',{
+        cilck:true //由better-scroll库来禁止系统默认的点击事件，使用自身的click来分发事件
+        })
+        //右侧食品列表滑动
+       this.rightScroll = new BScroll('.foods-wrapper',{
+         //  probeType控制滑动速度
+         probeType:1,
+         click: true,
+        })
+        //绑定scroll的事件监听
+        this.rightScroll.on('scroll', ({x, y}) => {
+           console.log('scroll', x, y)
+           this.scrollY = Math.abs(y)
+         })
+        //绑定scroll结束的事件监听
+        this.rightScroll.on('scrollEnd', ({x,y})=>{
+          console.log('scrollEnd', x, y)
+          this.scrollY = Math.abs(y)
+        })
+      },
+      _initTop(){
+        const  tops = []
+        let topHight = 0
+        //初始高度为0
+        tops.push(topHight)
+        const lis = this.$refs.rightUl.getElementsByClassName('food-list-hook')
+        Array.prototype.slice.call(lis).forEach(li=>{
+          topHight += li.clientHeight
+          tops.push(topHight)
+        })
+        this.tops = tops
+        console.log('tops', tops)
+      },
+      clickItem(index){
+        //获取到滚动位置的坐标
+        const y= -this.tops[index]
+        // 更新scrollY为目标值
+        this.scrollY = -y
+        //让右侧跟着滑动到目标位置
+        this.rightScroll.scrollTo(0, y, 500)
+      }
     }
   }
 </script>

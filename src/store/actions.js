@@ -70,12 +70,14 @@ export default {
       commit(RECEIVE_USER,{user})
     }
   },
+  //异步退出登陆
   async logout({commit}){
     const result = await reqLogout()
     if(result.code ===0 ){
       commit(LOGOUT_USER)
     }
   },
+  //异步获取商家信息列表
   async getShopInfo({commit}){
     const result = await reqShopInfo()
     if(result.code === 0){
@@ -83,13 +85,16 @@ export default {
       commit(RECEIVE_INFO, {info})
     }
   },
-  async getShopGoods({commit}){
+  //异步获取食品列表
+  async getShopGoods({commit}, cb){
     const result = await reqShopGoods()
     if(result.code === 0){
       const goods = result.data
       commit(RECEIVE_GOODS, {goods})
+      typeof cb==='function' && cb()
     }
   },
+  //异步获取商家评论列表
   async getShopRatings({commit}){
     const result = await reqShopRatings()
     if(result.code === 0){
