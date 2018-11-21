@@ -7,6 +7,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import TopHeader from './components/TopHeader/TopHeader.vue'
+import './mock/mockServer'
 /* eslint-disable no-new */
 Vue.component('TopHeader',TopHeader);
 Vue.component(Button.name,Button);

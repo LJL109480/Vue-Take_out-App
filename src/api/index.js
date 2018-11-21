@@ -26,3 +26,7 @@ export const reqPwdlogin = ({name, pwd, captcha}) => ajax(BASE+'/login_pwd', {na
 export const reqUserInfo = () => ajax(BASE+'/userinfo')
 //8.用户登出
 export const reqLogout = () => ajax(BASE+'/logout')
+
+export const reqShopInfo =() => ajax('/info')
+export const reqShopGoods = () => ajax('/goods')
+export const reqShopRatings = () => ajax('/ratings')

@@ -6,14 +6,20 @@ import {
   reqShops,
   reqFoodCategorys,
   reqUserInfo,
-  reqLogout
+  reqLogout,
+  reqShopInfo,
+  reqShopGoods,
+  reqShopRatings
 } from '../api'
 import {
   RECEIVE_SHOPS,
   RECEIVE_CATEGORYS,
   RECEIVE_ADDRESS,
   RECEIVE_USER,
-  LOGOUT_USER
+  LOGOUT_USER,
+  RECEIVE_GOODS,
+  RECEIVE_INFO,
+  RECEIVE_RATINGS
 } from './mutation-types'
 
 export default {
@@ -68,6 +74,27 @@ export default {
     const result = await reqLogout()
     if(result.code ===0 ){
       commit(LOGOUT_USER)
+    }
+  },
+  async getShopInfo({commit}){
+    const result = await reqShopInfo()
+    if(result.code === 0){
+      const info = result.data
+      commit(RECEIVE_INFO, {info})
+    }
+  },
+  async getShopGoods({commit}){
+    const result = await reqShopGoods()
+    if(result.code === 0){
+      const goods = result.data
+      commit(RECEIVE_GOODS, {goods})
+    }
+  },
+  async getShopRatings({commit}){
+    const result = await reqShopRatings()
+    if(result.code === 0){
+      const ratings = result.data
+      commit(RECEIVE_RATINGS,{ratings})
     }
   }
 

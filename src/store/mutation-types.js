@@ -7,3 +7,7 @@ export const RECEIVE_SHOPS = 'receive_shops' // 接收商家列表
 export const RECEIVE_USER = 'receive_user' //接受用户信息
 export const LOGOUT_USER = 'logout_user' //接受用户信息
 
+export const RECEIVE_GOODS = 'receive_goods' //拦截ajax请求 模拟数据
+export const RECEIVE_INFO = 'receive_info'
+export const RECEIVE_RATINGS = 'receive_ratings'
+
