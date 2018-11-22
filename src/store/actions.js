@@ -19,7 +19,9 @@ import {
   LOGOUT_USER,
   RECEIVE_GOODS,
   RECEIVE_INFO,
-  RECEIVE_RATINGS
+  RECEIVE_RATINGS,
+  ADD_FOOD_COUNT,
+  REDUCE_FOOD_COUNT
 } from './mutation-types'
 
 export default {
@@ -100,6 +102,14 @@ export default {
     if(result.code === 0){
       const ratings = result.data
       commit(RECEIVE_RATINGS,{ratings})
+    }
+  },
+  //定义同步更新food食物的数据请求
+  UpdateCount({commit}, {food, isAdd}){
+    if(isAdd){
+      commit(ADD_FOOD_COUNT, {food})
+    }else{
+      commit(REDUCE_FOOD_COUNT, {food})
     }
   }
 

@@ -10,5 +10,6 @@ export default {
   user:'' ,//用户信息对象
   goods:[], //商家列表
   ratings:[], //商家评价列表
-  info:{} //商家信息列表
+  info:{}, //商家信息列表
+  shopping:[] //食品总数量和食品总价格数组
 }

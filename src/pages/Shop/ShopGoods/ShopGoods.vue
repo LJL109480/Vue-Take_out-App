@@ -34,7 +34,7 @@
                   <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
                 </div>
                 <div class="cartcontrol-wrapper">
-                  CartControl组件
+                  <CarControl :food="food"/>
                 </div>
               </div>
             </li>
@@ -42,12 +42,15 @@
         </li>
       </ul>
     </div>
+      <ShopCart/>
   </div>
   </div>
 </template>
 <script>
   import BScroll  from 'better-scroll'
   import {mapState} from 'vuex'
+  import CarControl from '../../../components/CarControl/CarControl.vue'
+  import ShopCart from '../../../components/ShopCart/ShopCart.vue'
   export default{
    /* //右侧滑动，左侧根据右侧滑动距离对应到符合失误的标签上
     定义一个tops分类管理li标签的top值，当数据列表显示之后，不在变化
@@ -93,7 +96,7 @@
       _initSide(){
         //左侧滑动
         this.leftScroll = new BScroll('.menu-wrapper',{
-        cilck:true //由better-scroll库来禁止系统默认的点击事件，使用自身的click来分发事件
+        click:true //由better-scroll库来禁止系统默认的点击事件，使用自身的click来分发事件
         })
         //右侧食品列表滑动
        this.rightScroll = new BScroll('.foods-wrapper',{
@@ -133,6 +136,10 @@
         //让右侧跟着滑动到目标位置
         this.rightScroll.scrollTo(0, y, 500)
       }
+    },
+    components:{
+      CarControl,
+      ShopCart
     }
   }
 </script>
