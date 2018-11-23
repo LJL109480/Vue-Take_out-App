@@ -12,10 +12,12 @@ import {
   RECEIVE_INFO,
   RECEIVE_RATINGS,
   ADD_FOOD_COUNT,
-  REDUCE_FOOD_COUNT
+  REDUCE_FOOD_COUNT,
+  CLEAR_FOODS
 } from './mutation-types'
 
 export default {
+  // 接收地址信息
   [RECEIVE_ADDRESS] (state, {address}) {
     state.address = address
   },
@@ -57,7 +59,16 @@ export default {
   [REDUCE_FOOD_COUNT](state, {food}){
    if(food.count){
      food.count--
-     state.shopping.splice(this.shopping.indexOf(food), 1)
+     if(food.count===0){
+       state.shopping.splice(state.shopping.indexOf(food), 1)
+     }
    }
+  },
+  //清空购物车
+  [CLEAR_FOODS](state){
+    //清空购物车前先情掉food中添加的数据
+    state.shopping.forEach(food=>food.count=0)
+    //清空购物车
+    state.shopping=[]
   },
 }

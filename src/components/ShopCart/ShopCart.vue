@@ -2,7 +2,7 @@
   <div>
     <div class="shopcart">
       <div class="content">
-        <div class="content-left" @click="totalShow">
+        <div class="content-left"  @click="totalShow">
           <div class="logo-wrapper">
             <div class="logo" :class="{highlight:totalCount}">
               <i class="iconfont icon-shopping_cart" :class="{highlight:totalCount}"></i>
@@ -19,17 +19,17 @@
         </div>
       </div>
       <transition name="move">
-      <div class="shopcart-list" v-show="isShow">
+      <div class="shopcart-list" v-show="listShow">
         <div class="list-header">
           <h1 class="title">购物车</h1>
-          <span class="empty">清空</span>
+          <span class="empty" @click="clearFoods">清空</span>
         </div>
-        <div class="list-content">
+        <div class="list-content" >
           <ul>
             <li class="food" v-for="(food, index) in shopping" :key="index">
               <span class="name">{{food.name}}</span>
               <div class="price"><span>￥{{food.price}}</span></div>
-              <div class="cartcontrol-wrapper">
+              <div class="cartcontrol-wrapper" >
                 <CarControl :food="food"/>
               </div>
             </li>
@@ -38,10 +38,14 @@
       </div>
       </transition>
     </div>
-    <div class="list-mask" v-show="isShow" @click="totalShow"></div>
+    <transition name="fade">
+    <div class="list-mask"  v-show="listShow" @click="totalShow" ></div>
+    </transition>
   </div>
 </template>
 <script>
+  import {MessageBox} from 'mint-ui'
+  import BScroll  from 'better-scroll'
   import {mapState, mapGetters} from 'vuex'
   import  CarControl from '../CarControl/CarControl.vue'
   export default{
@@ -56,11 +60,18 @@
       PayClass(){
         const {totalPice} = this
         const {minPrice} = this.info
+        if(totalPice<=0){
+          return
+        }
+        if(totalPice)
         return totalPice < minPrice? 'not-enough' : 'enough'
       },
       Paytext(){
         const {totalPice} = this
         const {minPrice} = this.info
+        if(!minPrice){
+          return ''
+        }
         if(totalPice === 0 ){
           return `￥${minPrice}起送`
         }else if(minPrice>totalPice){
@@ -68,11 +79,45 @@
         }else{
           return '去结算'
         }
+      },
+      listShow(){
+        const {totalCount} = this
+        if(totalCount===0) {
+          this.isShow = false
+          return false
+        }
+        console.log(totalCount)
+        //阻止购物车在0状态下弹出窗口
+     /*   if(this.totalCount === 0){
+          this.isShow = false
+          console.log('11111',1)
+          return false
+        }*/
+        //列表将要显示前
+        if(this.isShow){
+          //在列表将要显示前判定是否有创建滑动，有则执行一次滑动，没有则创建一次滑动，避免滑动重复创建
+          if(!this.scroll){
+            this.scroll = new BScroll('.list-content',{
+              click:true
+            })
+          }else{
+              this.scroll.refresh()
+          }
+        }
+        return this.isShow
       }
+
     },
     methods:{
       totalShow(){
-        this.isShow = !this.isShow
+        if(this.totalCount>0){
+          this.isShow = !this.isShow
+        }
+      },
+      clearFoods(){
+        MessageBox.confirm('确定要删除购物车吗？').then(action=>{
+            this.$store.dispatch('clearFoods')
+        })
       }
     },
     components:{
@@ -179,7 +224,7 @@
         transition all 1s
       &.move-enter, &.move-leave-to
         opacity 0
-        transform translateY(100%)
+        transform translateY(0)
       .list-header
         height: 40px
         line-height: 40px

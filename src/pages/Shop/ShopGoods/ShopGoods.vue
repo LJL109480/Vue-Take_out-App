@@ -106,12 +106,10 @@
         })
         //绑定scroll的事件监听
         this.rightScroll.on('scroll', ({x, y}) => {
-           console.log('scroll', x, y)
            this.scrollY = Math.abs(y)
          })
         //绑定scroll结束的事件监听
         this.rightScroll.on('scrollEnd', ({x,y})=>{
-          console.log('scrollEnd', x, y)
           this.scrollY = Math.abs(y)
         })
       },

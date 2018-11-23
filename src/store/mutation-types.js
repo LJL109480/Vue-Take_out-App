@@ -12,4 +12,5 @@ export const RECEIVE_INFO = 'receive_info'  //获取商家信息数据
 export const RECEIVE_RATINGS = 'receive_ratings' // 获取商家评论列表数据
 export const ADD_FOOD_COUNT = 'add_food_count' //添加food中的食物数量
 export const REDUCE_FOOD_COUNT = 'reduce_food_count' // 减少food中添加的食物数量
+export const CLEAR_FOODS = 'clear_foods' // 减少food中添加的食物数量
 
