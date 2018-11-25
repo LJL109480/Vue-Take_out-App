@@ -4,7 +4,7 @@
       <div class="food-content">
 
         <div class="image-header">
-          <img :src="food.icon">
+          <img v-lazy="food.icon">
           <p class="foodpanel-desc">{{food.info}}</p>
           <div class="back" @click="AriseFood">
             <i class="iconfont icon-arrow_left"></i>

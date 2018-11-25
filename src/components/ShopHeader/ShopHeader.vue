@@ -30,7 +30,7 @@
     </div>
     <div class="shop-header-discounts" v-if="info.supports" @click="isShowPreferential=true">
       <div class="discounts-left">
-        <div class="activity" :class="supportsClss[info.supports[0].type]">
+        <div class="activity" :class="supportsClass[info.supports[0].type]">
           <span class="content-tag">
             <span class="mini-tag">{{info.supports[0].name}}</span>
           </span>
@@ -90,7 +90,7 @@
         <h2 class="activity-sheet-title">
           优惠活动</h2>
         <ul class="list">
-          <li class="activity-item" v-for="(support, index) in info.supports" :key="index" :class="supportsClss[support.type]">
+          <li class="activity-item" v-for="(support, index) in info.supports" :key="index" :class="supportsClass[support.type]">
             <span class="content-tag">
               <span class="mini-tag">{{support.name}}</span>
             </span>
@@ -112,7 +112,7 @@
   export default{
     data(){
       return{
-        supportsClss:['activity-green', 'activity-red','activity-orange'],
+        supportsClass:['activity-green', 'activity-red','activity-orange'],
         isShowPreferential:false,
         isShowBulletin:false
       }
