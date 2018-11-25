@@ -23,7 +23,7 @@
           stc.push('half')
         }
         //向stc中添加off
-        while (grade.length<5){
+        while (stc.length<5){
           stc.push('off')
         }
         return stc

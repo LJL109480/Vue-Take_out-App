@@ -18,7 +18,7 @@
         <li class="food-list-hook" v-for="(good, index) in goods" :key="index">
           <h1 class="title">{{good.name}}</h1>
           <ul>
-            <li class="food-item bottom-border-1px" v-for="(food, index) in good.foods" :key="index">
+            <li class="food-item bottom-border-1px" v-for="(food, index) in good.foods" :key="index" @click="ShowFood(food)">
               <div class="icon">
                 <img width="57" height="57"
                      :src="food.icon">
@@ -44,6 +44,7 @@
     </div>
       <ShopCart/>
   </div>
+    <Food :food="food" ref="UlFood"/>
   </div>
 </template>
 <script>
@@ -51,6 +52,7 @@
   import {mapState} from 'vuex'
   import CarControl from '../../../components/CarControl/CarControl.vue'
   import ShopCart from '../../../components/ShopCart/ShopCart.vue'
+  import Food from '../../../components/Food/Food.vue'
   export default{
    /* //右侧滑动，左侧根据右侧滑动距离对应到符合失误的标签上
     定义一个tops分类管理li标签的top值，当数据列表显示之后，不在变化
@@ -62,7 +64,8 @@
     data(){
       return{
         scrollY:0, //右侧的滑动位置
-        tops:[] //右侧所有分类li标签的top值
+        tops:[], //右侧所有分类li标签的top值
+        food:{}
       }
     },
     mounted(){
@@ -133,11 +136,16 @@
         this.scrollY = -y
         //让右侧跟着滑动到目标位置
         this.rightScroll.scrollTo(0, y, 500)
+      },
+      ShowFood(food){
+        this.food=food
+        this.$refs.UlFood.AriseFood()
       }
     },
     components:{
       CarControl,
-      ShopCart
+      ShopCart,
+      Food
     }
   }
 </script>

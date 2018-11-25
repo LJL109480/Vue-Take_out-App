@@ -98,11 +98,12 @@ export default {
     }
   },
   //异步获取商家评论列表
-  async getShopRatings({commit}){
+  async getShopRatings({commit}, cb){
     const result = await reqShopRatings()
     if(result.code === 0){
       const ratings = result.data
       commit(RECEIVE_RATINGS,{ratings})
+      typeof cb==='function' && cb()
     }
   },
   //定义同步更新food食物的数据请求

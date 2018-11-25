@@ -3,46 +3,49 @@
       <div class="ratings-content">
         <div class="overview">
           <div class="overview-left">
-            <h1 class="score">4.5</h1>
+            <h1 class="score">{{info.score}}</h1>
             <div class="title">综合评分</div>
-            <div class="rank">高于周边商家90%</div>
+            <div class="rank">高于周边商家{{info.rankRate}}%</div>
           </div>
           <div class="overview-right">
             <div class="score-wrapper">
               <span class="title">服务态度</span>
-              <div>Star组件</div>
-              <span class="score">4.4</span>
+              <Star :grade="info.serviceScore" :size="36"/>
+              <span class="score">{{info.serviceScore}}</span>
             </div>
             <div class="score-wrapper">
               <span class="title">商品评分</span>
-              <div>Star组件</div>
-              <span class="score">4.6</span></div>
+              <Star :grade="info.foodScore" :size="36"/>
+              <span class="score">{{info.foodScore}}</span></div>
             <div class="delivery-wrapper">
               <span class="title">送达时间</span>
-              <span class="delivery">30分钟</span>
+              <span class="delivery">{{info.deliveryTime}}分钟</span>
             </div>
           </div>
         </div>
 
-        <div class="split"></div>
-        <RatingSelect/>
+        <Spilt/>
+        <RatingSelect :styperateType="styperateType"
+                      :onlyContent="onlyContent"
+                      @setstyperateType="setstyperateType"
+                      @switchOnlyContent="switchOnlyContent"/>
         <div class="rating-wrapper">
           <ul>
-            <li class="rating-item">
+            <li class="rating-item" v-for="(rating, index) in filterratings" :key="index">
               <div class="avatar">
-                <img width="28" height="28" src="http://static.galileo.xiaojukeji.com/static/tms/default_header.png">
+                <img width="28" height="28" :src="rating.avatar">
               </div>
               <div class="content">
-                <h1 class="name">xxx</h1>
+                <h1 class="name">{{rating.username}}</h1>
                 <div class="star-wrapper">
-                  <div>Star组件</div>
-                  <span class="delivery">30</span>
+                  <Star :grade="rating.score" :size="24"/>
+                  <span class="delivery">{{rating.deliveryTime}}</span>
                 </div>
-                <p class="text">还可以</p>
+                <p class="text">{{rating.text}}</p>
                 <div class="recommend">
-                  <span class="iconfont icon-thumb_up"></span>
+                  <span class="iconfont" :class="rating.rateType===0?'icon-thumb_up':'icon-thumb_down'"></span>
                 </div>
-                <div class="time">2016-12-11 12:02:13</div>
+                <div class="time">{{rating.rateTime | data-format}}</div>
               </div>
             </li>
           </ul>
@@ -51,11 +54,59 @@
     </div>
   </template>
 <script>
+  import BScroll from 'better-scroll'
+  import {mapState} from 'vuex'
+
   import RatingSelect from '../../../components/RatingSelect/RatingSelect.vue'
+  import Star from '../../../components/Star/Star.vue'
+
   export default{
+    data(){
+      return{
+        styperateType:2,
+        onlyContent:true
+
+      }
+    },
+    mounted () {
+      this.$store.dispatch('getShopRatings', () => {
+        this.$nextTick(() => {
+          new BScroll('.ratings',{
+            click:true
+          })
+        })
+      })
+    },
+    computed:{
+      ...mapState(['ratings', 'info']),
+      filterratings(){
+        const {onlyContent, styperateType, ratings} = this
+        return ratings.filter((rating)=>{
+            const {text, rateType} = rating
+          /*两种状态判断
+          * 1. styperateType显示类型值是0/1/2 rateType的值是0/1
+          * rateType的值是1则代表有值。styperateType显示类型：0代表满意，1代表不满意， 2代表全部
+          * 如果styperateType===2则全部显示，其他值：styperateType===rateType
+          * 2.onlyContent是评论文本，false代表不显示，true代表显示
+          * 判断ratings中text有没有值，有值显示，没值不现实
+          * onlyContent===false， text。length>0*/
+          return (styperateType===2 || styperateType===rateType) && (onlyContent===false || text.length>0 )
+        })
+      }
+    },
+    methods:{
+      setstyperateType(styperateType){
+        this.styperateType=styperateType
+      },
+      switchOnlyContent(){
+        this.onlyContent = ! this.onlyContent
+      }
+    },
     components:{
-      RatingSelect
-    }
+      RatingSelect,
+      Star
+    },
+
   }
 </script>
 <style lang="stylus" rel="stylesheet/stylus">

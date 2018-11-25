@@ -1,28 +1,44 @@
 <template>
   <div class="ratingselect">
     <div class="rating-type border-1px">
-      <span class="block">
-        全部<span class="count">1</span>
+      <span class="block" :class="{active: styperateType===2}" @click="setstyperateType(2)">
+        全部<span class="count">{{ratingsCount}}</span>
       </span>
-      <span class="block active">
-        推荐<span class="count">1</span>
+      <span class="block " :class="{active: styperateType===0}" @click="setstyperateType(0)">
+        推荐<span class="count">{{satisfactionratingsCount}}</span>
       </span>
-      <span class="block">
-        吐槽<span class="count">0</span>
+      <span class="block" :class="{active: styperateType===1}" @click="setstyperateType(1)">
+        吐槽<span class="count">{{ratingsCount-satisfactionratingsCount}}</span>
       </span>
     </div>
-    <div class="switch on">
+    <div class="switch" :class="{on: onlyContent}" @click="switchOnlyContent">
       <span class="iconfont icon-check_circle"></span>
       <span class="text">只看有内容的评价</span>
     </div>
   </div>
 </template>
 <script>
-  export default{}
+  import {mapGetters} from 'vuex'
+  export default{
+    props:{
+      onlyContent: Boolean,
+      styperateType:Number
+    },
+    computed:{
+      ...mapGetters(['ratingsCount', 'satisfactionratingsCount'])
+    },
+    methods:{
+      switchOnlyContent(){
+        this.$emit('switchOnlyContent')
+      },
+      setstyperateType(type){
+        this.$emit('setstyperateType', type)
+      }
+    }
+  }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../../common/stylus/mixins.styl"
-
   .ratingselect
     .rating-type
       padding: 18px 0

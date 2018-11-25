@@ -81,9 +81,10 @@
             <span class="iconfont icon-close"></span>
           </div>
         </div>
-        <div class="brief-modal-cover"></div>
+        <div class="brief-modal-cover" @click="isShowBulletin=false"></div>
       </div>
     </transition>
+    <transition name="move">
     <div class="activity-sheet" v-show="isShowPreferential">
       <div class="activity-sheet-content">
         <h2 class="activity-sheet-title">
@@ -100,9 +101,11 @@
           <span class="iconfont icon-close"></span>
         </div>
       </div>
-      <div class="activity-sheet-cover"></div>
+      <div class="activity-sheet-cover" @click="isShowPreferential=false"></div>
     </div>
+    </transition>
   </div>
+
 </template>
 <script>
   import {mapState} from 'vuex'
@@ -416,7 +419,7 @@
       height 100%
       z-index 99
       &.move-enter-active, &.move-leave-active
-        transition opacity .3s
+        transition opacity 0.3s
       &.move-enter-active, &.move-leave-active
         opacity 0
       .activity-sheet-content
